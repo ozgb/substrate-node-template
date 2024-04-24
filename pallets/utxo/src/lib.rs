@@ -77,6 +77,7 @@ pub mod pallet {
 	impl<T: Config> Pallet<T> {
 		pub fn add_tx(tx: UtxoTransaction<T>) -> DispatchResult {
 			let owner = tx.owner.clone();
+			let tx_id = tx.id;
 			UnspentOutputs::<T>::mutate(owner, |v| match v {
 				None => {
 					*v = Some(BoundedVec::new());
@@ -84,6 +85,8 @@ pub mod pallet {
 				},
 				Some(v) => v.try_push(tx).map_err(|_| Error::<T>::InputLimitReached),
 			})?;
+
+            Self::deposit_event(Event::<T>::TransactionSuccessful{ id: tx_id } );
 
 			Ok(())
 		}
