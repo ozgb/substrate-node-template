@@ -9,6 +9,7 @@ homepage = "https://substrate.io"
 members = [
     "node",
     "pallets/template",
+	"pallets/utxo",
     "runtime",
 ]
 resolver = "2"
